@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="box">
+      <div class="form">
+        <h2>SIGN UP</h2>
+        <form id="signupForm">
+          <div class="inputbox">
+            <input
+              type="text"
+              id="username"
+              required
+              minlength="3"
+              maxlength="15"
+            />
+            <span>Username</span>
+          </div>
+          <div class="inputbox">
+            <input type="email" id="email" required />
+            <span>E-mail</span>
+          </div>
+          <div class="inputbox">
+            <input type="password" id="password" required minlength="6" />
+            <span>Password</span>
+          </div>
+          <button id="submit" type="submit" class="sub">Sign Up</button>
+          <p>Already have an account <a href="index.html">LOGIN</a></p>
+        </form>
+      </div>
+    </div>
+    <script type="module">
+      // Import the functions
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js'
+      import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        child
+      } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js'
+
+      const firebaseConfig = {
+        apiKey: 'AIzaSyD50B4NlAOemnsdPAeHEr0ZNavWT9i5KTs',
+        authDomain: 'signup-c5a72.firebaseapp.com',
+        databaseURL:
+          'https://signup-c5a72-default-rtdb.asia-southeast1.firebasedatabase.app/',
+        projectId: 'signup-c5a72',
+        storageBucket: 'signup-c5a72.appspot.com',
+        messagingSenderId: '756285594101',
+        appId: '1:756285594101:web:669cf930f176fc2efda8bc',
+        measurementId: 'G-MYMSFBNMVB'
+      }
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig)
+
+      //get ref to database services
+      const db = getDatabase(app)
+
+      document.getElementById('submit').addEventListener('click', function (e) {
+        e.preventDefault()
+        var username = document.getElementById('username').value
+        var email = document.getElementById('email').value
+        var password = document.getElementById('password').value
+
+        // Check if username, email, and password are not empty
+        if (
+          username.trim() !== '' &&
+          email.trim() !== '' &&
+          password.trim() !== ''
+        ) {
+          set(ref(db, 'user/' + username), {
+            username: username,
+            email: email,
+            password: password
+          })
+            .then(() => {
+              alert('Account created successfully!')
+              window.location.href =
+                'https://maheshmohite6520.github.io/LoginPage/index.html'
+            })
+            // .then(() => {
+            //   onclick()
+            // })
+            .catch(error => {
+              console.error('Error writing document: ', error)
+              alert(
+                'An error occurred while processing your request. Please try again later.'
+              )
+            })
+        } else {
+          alert('Please fill in all the details.') // Alert if any field is empty
+        }
+      })
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
